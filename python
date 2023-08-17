@@ -1,0 +1,21 @@
+import numpy as np
+import pandas as pd
+import streamlit as st 
+from matplotlib import pyplot as plt
+import plotly.express as px
+import scipy.stats as stats
+from scipy.stats import mannwhitneyu
+
+data_frame = pd.read_csv("Desktop/Pokemon.csv")
+st.dataframe(data_frame)
+
+
+sb1 = st.selectbox("Column1" , (data_frame.columns.tolist()))
+sb2 = st.selectbox("Column2" , (data_frame.columns.tolist()))
+fig = px.histogram(data_frame, x=sb1, y=sb2)
+st.plotly_chart(fig)
+sb3 = st.selectbox("Test", ("T-test", "U-test"))
+if (sb3 == "T-test"): 
+    st.write(stats.ttest_rel(data_frame[sb1], data_frame[sb2]))
+else:
+    st.write(mannwhitneyu(data_frame[sb1], data_frame[sb2]))
